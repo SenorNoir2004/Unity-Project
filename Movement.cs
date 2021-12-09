@@ -9,9 +9,9 @@ using UnityEngine;
     public float Momentum;
 
  public Player_Movement() {
-      Player_velocity = 0;
+      Player_velocity = 10f;
      Player_Mass = 1; // This value is a place holder 
-     Gravity = -0.1f; // This value is a place holder 
+     Gravity = -4f; // This value is a place holder 
      Defult_Jump = 2.0f; // This value is a place holder 
      Boosted_jump = Defult_Jump * 1.2f;
      Momentum = Player_Mass * Player_velocity;
@@ -20,10 +20,14 @@ using UnityEngine;
  }
  class Player01_Attribute {}
     
-public class Movement: MonoBehaviour {
+public class Movement: MonoBehaviour 
+{
 
-Player_Movement Player01_Movement = new Player_Movement(); 
-
+public Player_Movement Player01_Movement = new Player_Movement(); 
+   public CharacterController controller;
+   public float turnSmoothTime = 0.1f;
+   float turnSmoothVelocity;
+       
 
     // Update is called once per frame
     void Update()
@@ -33,9 +37,16 @@ Player_Movement Player01_Movement = new Player_Movement();
        float zDirection = Input.GetAxis("Vertical"); 
        bool JumpKey = Input.GetKey(KeyCode.Space);
        bool JumpKeyHeld = Input.GetKeyDown(KeyCode.Space);
-       // This section updates player possition 
-       Vector3 movedirection = new Vector3(xDirection, Player01_Movement.Gravity, zDirection);
-       transform.position += movedirection;
+       // This section updates player possition
+       Vector3 DirectT = new Vector3(xDirection, Player01_Movement.Gravity, zDirection).normalized; 
+       Vector3 movedirection = new Vector3(xDirection, Player01_Movement.Gravity, zDirection).normalized;
+       if (movedirection.magnitude >= 0.1f)
+       {/// Atan2 is a function that returns an angle between the x axis and the y axisin raidians 
+           float targetAngle = Mathf.Atan2(movedirection.x, movedirection.z) * Mathf.Rad2Deg;
+           float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y,targetAngle,ref turnSmoothVelocity, turnSmoothTime);
+           controller.Move(movedirection * Player01_Movement.Player_velocity * Time.deltaTime);
+           transform.rotation = Quaternion.Euler(0f,angle, 0f);
+       }
        // Checks if space bar is pressed and activates jump when pressed for i frame  
        if (JumpKey == true){
            Vector3 JumpDir = new Vector3(0.0f, (Player01_Movement.Defult_Jump* Player01_Movement.Momentum), 0.0f);
