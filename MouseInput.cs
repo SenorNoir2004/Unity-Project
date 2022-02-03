@@ -1,4 +1,4 @@
-// GENERATED AUTOMATICALLY FROM 'Assets/Scripts/Players/Mouse.inputactions'
+
 
 using System;
 using System.Collections;
