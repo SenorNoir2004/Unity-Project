@@ -1,4 +1,6 @@
 using UnityEngine;
+using UnityEngine.Tilemaps;
+using UnityEngine.AI;
 
  public class Player_Movement{
     public float Player_velocity;
@@ -9,7 +11,7 @@ using UnityEngine;
     public float Momentum;
 
  public Player_Movement() {
-      Player_velocity = 10f;
+      Player_velocity = 70f;
      Player_Mass = 1; // This value is a place holder 
      Gravity = -4f; // This value is a place holder 
      Defult_Jump = 2.0f; // This value is a place holder 
@@ -22,6 +24,58 @@ using UnityEngine;
     
 public class Movement: MonoBehaviour 
 {
+    public Camera cam; 
+    public NavMeshAgent player;
+    public GameObject targetDest;
+    MouseInput mouseInput;
+    
+    public Tilemap map;
+
+
+
+    private Vector3 destination;
+
+  
+  // Awake function inintialises mouse input
+  private void Awake(){
+     mouseInput = new MouseInput();
+            
+     }
+
+  private void onEnable(){
+      mouseInput.Enable();
+    }
+
+  private  void onDisable(){
+      mouseInput.Disable();
+     }
+   void start(){
+       
+       destination = transform.position;
+       mouseInput.Mouse.MouseClick.performed += _ => MouseClick();
+
+   }
+   private void MouseClick() {
+       //Returns a value between zero and the screen width or hight. 
+       Vector2 mousePosition = mouseInput.Mouse.MousePosistion.ReadValue<Vector2>();
+       mousePosition = Camera.main.ScreenToWorldPoint(mousePosition);
+      // Making sure we are clicking the cell
+      //World Coordinates convert to tilemap coordinated
+       Vector3Int gridPosition = map.WorldToCell(mousePosition); //Allows the player object to go to the possition of the mouse 
+       if (map.HasTile(gridPosition)){
+           destination = mousePosition;
+           Debug.Log(mousePosition);
+
+       }
+        
+   }
+
+   
+
+
+
+
+public Vector3 T = new Vector3();
 
 public Player_Movement Player01_Movement = new Player_Movement(); 
    public CharacterController controller;
@@ -30,9 +84,25 @@ public Player_Movement Player01_Movement = new Player_Movement();
        
 
     // Update is called once per frame
-    void Update()
+    public void Update()
     {
-        // This section recieves player possion and input 
+        if(Input.GetMouseButtonDown(0)){
+            Ray ray = cam.ScreenPointToRay(Input.mousePosition);
+            RaycastHit  hitPoint;
+            
+            if(Physics.Raycast(ray, out hitpoint)){
+                targetDest.transform.position - hitPoint.point;
+                player.SetDestination(hitPoint.point);//The navigation will take line of code, set destination, and will plot a path over Navmesh for player to make way
+            }
+        }
+        
+        // This section recieves player possion and input
+
+        //Transforms player movement 
+        if (Vector3.Distance(transform.position, destination) > 0.1f)
+          transform.position = Vector3.MoveTowards(transform.position, destination, Player01_Movement.Player_velocity* Time.deltaTime);
+         
+
        float xDirection = Input.GetAxis("Horizontal"); 
        float zDirection = Input.GetAxis("Vertical"); 
        bool JumpKey = Input.GetKey(KeyCode.Space);
@@ -40,6 +110,7 @@ public Player_Movement Player01_Movement = new Player_Movement();
        // This section updates player possition
        Vector3 DirectT = new Vector3(xDirection, Player01_Movement.Gravity, zDirection).normalized; 
        Vector3 movedirection = new Vector3(xDirection, Player01_Movement.Gravity, zDirection).normalized;
+       Vector3 T = DirectT;
        if (movedirection.magnitude >= 0.1f)
        {/// Atan2 is a function that returns an angle between the x axis and the y axisin raidians 
            float targetAngle = Mathf.Atan2(movedirection.x, movedirection.z) * Mathf.Rad2Deg;
@@ -61,7 +132,12 @@ public Player_Movement Player01_Movement = new Player_Movement();
            }
 
        }
-
+     
     }
+    
+    
+
 }
+
+
 
