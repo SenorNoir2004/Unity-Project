@@ -10,41 +10,44 @@ public class P1Skills : MonoBehaviour
     NavMeshAgent PlayerMesh; 
     public MouseClickDetected Dclick;
     Vector3 MousePosVector;
-    MouseTracker MoInp; 
+    public MouseTracker MoInp; 
     float startTime;  
+     
     
      
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
     
-    
-    MoInp = GetComponent<MouseTracker>();
     PlayerMesh = GetComponent<NavMeshAgent>();
-
+    //Debug.Log(Dclick.DoubleClick);
+   
     }
-     public Transform mouseTracker;
+     //public Transform mouseTracker;
 
     // Update is called once per frame
     void Update()
     {
-    startTime = Time.time;
-     if(Dclick.DoubleClick == true){ 
-      while (Time.time < startTime + BoostDur){
-        PlayerMesh.destination = mouseTracker.position;
-        PlayerMesh.speed = PlayerMesh.speed * BoostMult;
-        Debug.Log("Boost");  
-       
-
-    
+     //Debug.Log(MoInp.MousePosition3d);
+     startTime = Time.time;
+     if ( Dclick.DoubleClick){
+      PlayerMesh.destination =  MoInp.MousePosition3d;
+      PlayerMesh.speed = PlayerMesh.speed * BoostMult;
+      Debug.Log("Boost");  
       PlayerMesh.speed = PlayerMesh.speed / BoostMult ; 
+       
+      }
+    
      
-         
-      }  
     }
+
+   
+          
+      }  
+    
 
 
       
  
-     }
-}
+    
+

@@ -10,6 +10,7 @@ public class MouseClickDetected : MonoBehaviour{
     public bool CorotineAllowed;
     public bool DoubleClick = false;
     public int clickCounter;
+    
 
      void start(){
         firstClickTime = 0f;
@@ -20,9 +21,10 @@ public class MouseClickDetected : MonoBehaviour{
 
 
      }
-     void Update () {
+     public void Update () {
         if(Input.GetMouseButtonUp(0))
             clickCounter += 1;
+            
         
         // First time stap is taken, then amount of time is tracked 
         if ((clickCounter == 1) && (CorotineAllowed)){
@@ -36,16 +38,15 @@ public class MouseClickDetected : MonoBehaviour{
      }
     
      // Research 
-     private IEnumerator DoubleClickDetection(){
+     IEnumerator DoubleClickDetection(){
         // A new core routine will not start unless this one is over 
         CorotineAllowed = false;
-        Debug.Log(firstClickTime );
-        Debug.Log(Time.time);
         //Only activates while time.time is less than firstClickTime (firstClickTime being greater than time.time for 1.2f)
         while (Time.time < (firstClickTime) ){
             if (clickCounter == 2){
                 // Sends message to console 
                 DoubleClick = true;
+                
                 
                
                 
@@ -62,6 +63,8 @@ public class MouseClickDetected : MonoBehaviour{
      firstClickTime = 0f;
      CorotineAllowed = true; 
      DoubleClick = false; 
+      
+     
     }
  }
 
