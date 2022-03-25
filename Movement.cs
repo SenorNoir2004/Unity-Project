@@ -1,6 +1,5 @@
 using UnityEngine;
-using UnityEngine.Tilemaps;
-using UnityEngine.AI;
+
 
  public class Player_Movement{
     public float Player_velocity;
@@ -24,52 +23,11 @@ using UnityEngine.AI;
     
 public class Movement: MonoBehaviour 
 {
-    public Camera cam; 
-    public NavMeshAgent player;
-    public GameObject targetDest;
+    public Camera cam;
     MouseInput mouseInput;
-    
-    public Tilemap map;
-
 
 
     private Vector3 destination;
-
-  
-  // Awake function inintialises mouse input
-  private void Awake(){
-     mouseInput = new MouseInput();
-            
-     }
-
-  private void onEnable(){
-      mouseInput.Enable();
-    }
-
-  private  void onDisable(){
-      mouseInput.Disable();
-     }
-   void start(){
-       
-       destination = transform.position;
-       mouseInput.Mouse.MouseClick.performed += _ => MouseClick();
-
-   }
-   private void MouseClick() {
-       //Returns a value between zero and the screen width or hight. 
-       Vector2 mousePosition = mouseInput.Mouse.MousePosistion.ReadValue<Vector2>();
-       mousePosition = Camera.main.ScreenToWorldPoint(mousePosition);
-      // Making sure we are clicking the cell
-      //World Coordinates convert to tilemap coordinated
-       Vector3Int gridPosition = map.WorldToCell(mousePosition); //Allows the player object to go to the possition of the mouse 
-       if (map.HasTile(gridPosition)){
-           destination = mousePosition;
-           Debug.Log(mousePosition);
-
-       }
-        
-   }
-
    
 
 
@@ -86,14 +44,7 @@ public Player_Movement Player01_Movement = new Player_Movement();
     // Update is called once per frame
     public void Update()
     {
-        if(Input.GetMouseButtonDown(0)){
-            Ray ray = cam.ScreenPointToRay(Input.mousePosition);
-            RaycastHit  hitPoint;
-            
-            if(Physics.Raycast(ray, out hitpoint)){
-                targetDest.transform.position - hitPoint.point;
-                player.SetDestination(hitPoint.point);//The navigation will take line of code, set destination, and will plot a path over Navmesh for player to make way
-            }
+ 
         }
         
         // This section recieves player possion and input
@@ -111,6 +62,7 @@ public Player_Movement Player01_Movement = new Player_Movement();
        Vector3 DirectT = new Vector3(xDirection, Player01_Movement.Gravity, zDirection).normalized; 
        Vector3 movedirection = new Vector3(xDirection, Player01_Movement.Gravity, zDirection).normalized;
        Vector3 T = DirectT;
+       //The magn itude is calculated here. Ob)IF
        if (movedirection.magnitude >= 0.1f)
        {/// Atan2 is a function that returns an angle between the x axis and the y axisin raidians 
            float targetAngle = Mathf.Atan2(movedirection.x, movedirection.z) * Mathf.Rad2Deg;
