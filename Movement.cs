@@ -17,7 +17,7 @@ using UnityEngine;
      Momentum = Player_Mass * Player_velocity;
 
     
-public class Movement: MonoBehaviour 
+public class Classic_Controls: MonoBehaviour 
 {
     public Camera cam;
     MouseInput mouseInput;
