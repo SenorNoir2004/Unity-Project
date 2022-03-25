@@ -1,6 +1,5 @@
 using UnityEngine;
 
-
  public class Player_Movement{
     public float Player_velocity;
     public float Player_Mass; // This value is a place holder 
@@ -16,10 +15,7 @@ using UnityEngine;
      Defult_Jump = 2.0f; // This value is a place holder 
      Boosted_jump = Defult_Jump * 1.2f;
      Momentum = Player_Mass * Player_velocity;
- }
 
- }
- class Player01_Attribute {}
     
 public class Movement: MonoBehaviour 
 {
@@ -29,10 +25,6 @@ public class Movement: MonoBehaviour
 
     private Vector3 destination;
    
-
-
-
-
 public Vector3 T = new Vector3();
 
 public Player_Movement Player01_Movement = new Player_Movement(); 
