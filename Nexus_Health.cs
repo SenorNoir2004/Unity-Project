@@ -9,6 +9,7 @@ public class Nexus_Health : MonoBehaviour
 
  private void Update(){
      if (Nexus_Max_Health < 200){
+       once = true;
          if(once)
          {
            Debug.Log(Nexus_Max_Health);
