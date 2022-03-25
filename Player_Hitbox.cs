@@ -10,6 +10,7 @@ public class Player_Hitbox : MonoBehaviour
     public MouseClickDetected DC; 
     public Nexus_Hurtbox NexH;
     public Selection_Manager Select;
+    public GameObject Attacker; 
 
     //Can distinguish what I want/not want to check when the game is being run. Avoids waisting efficiency 
     public LayerMask layerMask;
@@ -27,9 +28,9 @@ public class Player_Hitbox : MonoBehaviour
          
          if ( (Select.Nex_Selected) & ( other)) 
           {
-          Debug.Log(Select.Nex_Selected);
-          Debug.Log(DC.clickCounter);
             NHealth.Nexus_Max_Health  -= Basic_Damge;
+            Attacker.transform.position -= NockBack;
+            
             
           } 
         }
