@@ -1,25 +1,25 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+
 
 public class Nexus_Health : MonoBehaviour
 {
- public float Nexus_Max_Health = 200;
- private bool once = false;
+    public pHHealth Health;
+    public float Nexus_Max_Health = 200;
+    public float Nexus_Current_Health = 200f;
 
- private void Update(){
-     if (Nexus_Max_Health < 200){
-       once = true;
-         if(once)
-         {
-           Debug.Log(Nexus_Max_Health);
-           once = false; 
-         }
-         
-     }
- }
+    void Start()
+    {
+        Health.SetMaxHealth(Nexus_Max_Health);
+    }
 
+    void FixedUpdate()
+    {
+        Health.SetHealth(Nexus_Current_Health);
 
+    }
 }
 
 
