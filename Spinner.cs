@@ -6,9 +6,11 @@ public class Spinner : MonoBehaviour
     public Vector3 QuaternionToVector;
     public Vector3 QuaternionReverse;
     public float lerpTime = 1;
-    public bool Rotate;
-    public bool RotateConstantly;
+    public bool Rotate = true;
+    public bool RotateConstantly = true;
     public float rotateamount = 1;
+    public Rigidbody rb; 
+     
     
      
 
@@ -22,11 +24,22 @@ public class Spinner : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update(){
+    void FixedUpdate()
+    {
       if (Rotate)
-         transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(QuaternionReverse), Time.deltaTime * lerpTime );  
-         if(RotateConstantly && !Rotate)
-             transform.Rotate( Vector3.back * rotateamount);
+        {
+          
+            transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(QuaternionReverse), Time.deltaTime * lerpTime);
+        }
+
+
+        if (RotateConstantly && !Rotate)
+        {
+           
+            Vector3 nb = new Vector3(0f, 0f, 20f) * Time.deltaTime;
+            transform.Rotate(nb);
+
+        }
     }
 
     public void snapRotation(){
